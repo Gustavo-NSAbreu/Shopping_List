@@ -67,6 +67,7 @@ function App() {
           }
         </tbody>
       </table>
+      <button onClick={() => setLista([])}>Limpar lista</button>
     </div>
   </div>
 }
