@@ -2,7 +2,8 @@ import { useState } from "react"
 
 interface ItemCompra {
   item: string
-  quantidade: number
+  quantidade: number,
+  bought?: boolean
 }
 
 function App() {
@@ -25,6 +26,16 @@ function App() {
     setLista(newList);
   }
 
+  const setAsBought = (index: number) => {
+    const newList = listaCompras?.map((item, i) => {
+      if (i === index) {
+        return { ...item, bought: true }
+      }
+      return item;
+    });
+    setLista(newList);
+  }
+
   return <div>
     <div>
       <h1>Lista de compras</h1>
@@ -32,7 +43,7 @@ function App() {
       <input type="number" value={quantidade} onChange={(e)=>{setQuantidade(Number(e.target.value))}} placeholder="quantidade" />
       <input type="button" onClick={handleCreateItem} value="Adicionar" />
     </div>
-    <div>
+    <div className="mt-5">
       <table>
         <thead>
           <tr>
@@ -44,11 +55,12 @@ function App() {
         <tbody>
           {
             (listaCompras ?? []).map(
-              (item, index) => <tr key={index}>
+              (item, index) => <tr className={item.bought ?"line-through":undefined} key={index}>
                 <td>{item?.item}</td>
                 <td>{item?.quantidade}</td>
                 <td>
                   <button onClick={() => removeItem(index)}>Excluir</button>
+                  <button onClick={() => setAsBought(index)}>Comprar</button>
                 </td>
               </tr>
             )
