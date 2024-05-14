@@ -8,6 +8,7 @@ interface ItemCompra {
 
 export default function App() {
   const [listaCompras, setLista] = useState<ItemCompra[]>([]);
+  const [listTitle, setListTitle] = useState<string>('Lista de compras');
   const [item, setItem] = useState<string>('');
   const [quantidade, setQuantidade] = useState<number>(0);
 
@@ -39,7 +40,8 @@ export default function App() {
   return (
     <div className="bg-blue-900 text-white min-h-screen">
       <div className="p-5">
-        <h1 className="text-4xl mb-5">Lista de compras</h1>
+        <input className="text-4xl mb-5 bg-transparent" value={listTitle} onChange={(e)=>setListTitle(e.target.value)} />
+        <br/>
         <input className="bg-blue-800 p-2 rounded mr-2" type="text" value={item} onChange={(e)=>{setItem(e.target.value)}} placeholder="adicione o item" />
         <input className="bg-blue-800 p-2 rounded mr-2" type="number" value={quantidade} onChange={(e)=>{setQuantidade(Number(e.target.value))}} placeholder="quantidade" />
         <input className="bg-blue-700 p-2 rounded text-white" type="button" onClick={handleCreateItem} value="Adicionar" />
