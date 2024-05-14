@@ -6,7 +6,7 @@ interface ItemCompra {
   bought?: boolean
 }
 
-function App() {
+export default function App() {
   const [listaCompras, setLista] = useState<ItemCompra[]>([]);
   const [item, setItem] = useState<string>('');
   const [quantidade, setQuantidade] = useState<number>(0);
@@ -36,40 +36,42 @@ function App() {
     setLista(newList);
   }
 
-  return <div>
-    <div>
-      <h1>Lista de compras</h1>
-      <input type="text" value={item} onChange={(e)=>{setItem(e.target.value)}} placeholder="adicione o item" />
-      <input type="number" value={quantidade} onChange={(e)=>{setQuantidade(Number(e.target.value))}} placeholder="quantidade" />
-      <input type="button" onClick={handleCreateItem} value="Adicionar" />
+  return (
+    <div className="bg-blue-900 text-white min-h-screen">
+      <div className="p-5">
+        <h1 className="text-4xl mb-5">Lista de compras</h1>
+        <input className="bg-blue-800 p-2 rounded mr-2" type="text" value={item} onChange={(e)=>{setItem(e.target.value)}} placeholder="adicione o item" />
+        <input className="bg-blue-800 p-2 rounded mr-2" type="number" value={quantidade} onChange={(e)=>{setQuantidade(Number(e.target.value))}} placeholder="quantidade" />
+        <input className="bg-blue-700 p-2 rounded text-white" type="button" onClick={handleCreateItem} value="Adicionar" />
+      </div>
+      <div className="p-5">
+        <table className="w-full">
+          <thead>
+            <tr>
+              <th className="text-left">Item</th>
+              <th className="text-left">Quantidade</th>
+              <th className="text-left">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              (listaCompras ?? []).map(
+                (item, index) => <tr className={item.bought ?"line-through":undefined} key={index}>
+                  <td>{item?.item}</td>
+                  <td>{item?.quantidade}</td>
+                  <td>
+                    <button className="bg-red-500 p-2 rounded text-white mr-2" onClick={() => removeItem(index)}>Excluir</button>
+                    <button className="bg-green-500 p-2 rounded text-white" onClick={() => setAsBought(index)}>Comprar</button>
+                  </td>
+                </tr>
+              )
+            }
+          </tbody>
+        </table>
+        <button className="bg-red-500 p-2 rounded text-white mt-5" onClick={() => setLista([])}>Limpar lista</button>
+      </div>
     </div>
-    <div className="mt-5">
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Quantidade</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            (listaCompras ?? []).map(
-              (item, index) => <tr className={item.bought ?"line-through":undefined} key={index}>
-                <td>{item?.item}</td>
-                <td>{item?.quantidade}</td>
-                <td>
-                  <button onClick={() => removeItem(index)}>Excluir</button>
-                  <button onClick={() => setAsBought(index)}>Comprar</button>
-                </td>
-              </tr>
-            )
-          }
-        </tbody>
-      </table>
-      <button onClick={() => setLista([])}>Limpar lista</button>
-    </div>
-  </div>
+  );
 }
 
-export default App
+
