@@ -10,16 +10,26 @@ export default function App() {
   const [listaCompras, setLista] = useState<ItemCompra[]>([]);
   const [listTitle, setListTitle] = useState<string>('Lista de compras');
   const [item, setItem] = useState<string>('');
-  const [quantidade, setQuantidade] = useState<number>(0);
+  const [quantidade, setQuantidade] = useState<string>();
 
   const handleCreateItem = () => {
     const newItem: ItemCompra = {
       item: item ?? '',
-      quantidade: quantidade ?? 0
+      quantidade: Number(quantidade ?? '0')
     }
+
+    if(newItem.quantidade <= 0) {
+      alert('Quantidade deve ser maior que 0')
+      return;
+    }
+    if(!newItem.item.trim()) {
+      alert('item não pode estar vazio');
+      return;
+    }
+    
     setLista([...(listaCompras ?? []), newItem]);
     setItem('');
-    setQuantidade(0);
+    setQuantidade('0');
   }
 
   const removeItem = (index: number) => {
@@ -43,7 +53,7 @@ export default function App() {
         <input className="text-4xl mb-5 bg-transparent" value={listTitle} onChange={(e)=>setListTitle(e.target.value)} />
         <br/>
         <input className="bg-blue-800 p-2 rounded mr-2" type="text" value={item} onChange={(e)=>{setItem(e.target.value)}} placeholder="adicione o item" />
-        <input className="bg-blue-800 p-2 rounded mr-2" type="number" value={quantidade} onChange={(e)=>{setQuantidade(Number(e.target.value))}} placeholder="quantidade" />
+        <input className="bg-blue-800 p-2 rounded mr-2" type="number" value={quantidade} onChange={(e)=>{setQuantidade(e.target.value)}} placeholder="quantidade" />
         <input className="bg-blue-700 p-2 rounded text-white" type="button" onClick={handleCreateItem} value="Adicionar" />
       </div>
       <div className="p-5">
